@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Birthday Surprise 🎁</title>
+<style>
+/* ===== Body & Background ===== */
+body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+    /* Beautiful animated gradient background */
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a1c4fd, #c2e9fb);
+    background-size: 400% 400%;
+    animation: gradientMove 20s ease infinite;
+}
+@keyframes gradientMove {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* ===== Container ===== */
+.container {
+    text-align: center;
+    position: relative;
+}
+
+/* ===== Gift Box ===== */
+.box {
+    width: 220px;
+    height: 160px;
+    background: linear-gradient(135deg,#ec4899,#db2777);
+    border-radius: 14px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    position: relative;
+    margin: auto;
+    cursor: pointer;
+    transition: transform 1s ease;
+}
+.lid {
+    width: 220px;
+    height: 50px;
+    background: linear-gradient(135deg,#f472b6,#ec4899);
+    position: absolute;
+    top: -50px;
+    border-radius: 14px 14px 0 0;
+    transform-origin: bottom;
+    transition: transform 1s ease;
+}
+
+/* ===== Tap message ===== */
+.message-tap {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #38bdf8;
+}
+
+/* ===== Cake ===== */
+.cake {
+    width: 140px;
+    margin: 20px auto 0 auto;
+    display: none;
+    position: relative;
+}
+.cake-layer {
+    width: 140px;
+    height: 40px;
+    background: #fff1e6;
+    border-radius: 12px;
+    margin-bottom: -10px;
+    position: relative;
+    z-index: 1;
+}
+.cake-top {
+    width: 100px;
+    height: 40px;
+    background: #ffd9b3;
+    border-radius: 50% 50% 0 0;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+.candle {
+    width: 8px;
+    height: 25px;
+    background: yellow;
+    border-radius: 3px;
+    position: absolute;
+    top: -25px;
+}
+.candle .flame {
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, orange, red);
+    border-radius: 50%;
+    position: absolute;
+    top: -10px;
+    left: -1px;
+    animation: flicker 0.3s infinite alternate;
+}
+.candle:nth-child(1){ left: 10px; }
+.candle:nth-child(2){ left: 30px; }
+.candle:nth-child(3){ left: 50px; }
+.candle:nth-child(4){ left: 70px; }
+.candle:nth-child(5){ left: 90px; }
+
+@keyframes flicker { 
+    from{transform:scale(1);opacity:0.8;} 
+    to{transform:scale(1.3);opacity:1;} 
+}
+
+/* ===== Wish ===== */
+.wish {
+    font-size: 20px;
+    margin-top: 20px;
+    opacity: 0;
+    transition: all 1.5s ease;
+    line-height: 1.5;
+}
+
+/* ===== Sprinkles ===== */
+.sprinkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    top: -10px;
+    animation: fall 3s linear forwards;
+}
+@keyframes fall { 
+    to { transform: translateY(100vh) rotate(360deg); opacity: 0; } 
+}
+
+/* ===== Box Lid Open ===== */
+.open .lid { transform: rotateX(120deg); }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <!-- Gift Box -->
+    <div class="box" id="giftBox">
+        <div class="lid"></div>
+    </div>
+    <div class="message-tap">Tap here to open 🎁</div>
+
+    <!-- Cake -->
+    <div class="cake" id="cake">
+        <div class="cake-layer"></div>
+        <div class="cake-layer"></div>
+        <div class="cake-top">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+            <div class="candle"><div class="flame"></div></div>
+        </div>
+    </div>
+
+    <!-- Your Custom Wish -->
+    <div class="wish" id="wish">
+        <b>Happy birthday Chashmish</b><br><br>
+        Dua kori jibone onek boro ho, Tor jiboner shob ISSA puron hok, onk happy thakish, khonon jeno Tor Kono karone Mon kharap na hoi...<br>
+        Shob somoi Mone rakhbi Ami Tor pashei asi..<br><br>
+        Your such a wonderful person...<br><br>
+        Tor moto frnd peye Ami really onk grateful
+    </div>
+</div>
+
+<!-- Background Music -->
+<audio id="music" autoplay>
+    <source src="your-song.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let opened = false;
+const giftBox = document.getElementById('giftBox');
+const lid = giftBox.querySelector('.lid');
+const cake = document.getElementById('cake');
+const wish = document.getElementById('wish');
+const music = document.getElementById('music');
+
+giftBox.addEventListener('click', () => {
+    if(opened) return;
+    opened = true;
+
+    // Vibrate phone if supported
+    if(navigator.vibrate){ navigator.vibrate([200,100,200]); }
+
+    // Open the lid
+    lid.style.transform = 'rotateX(120deg)';
+
+    // Show cake
+    cake.style.display = 'block';
+
+    // Show wish
+    wish.style.opacity = 1;
+
+    // Play music
+    music.play().catch(()=>{});
+
+    // Sprinkles raining
+    setInterval(() => {
+        const sprinkle = document.createElement('div');
+        sprinkle.className = 'sprinkle';
+        sprinkle.style.left = Math.random()*100 + 'vw';
+        sprinkle.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+        document.body.appendChild(sprinkle);
+        setTimeout(()=> sprinkle.remove(), 3000);
+    }, 150);
+});
+</script>
+
+</body>
+</html>
